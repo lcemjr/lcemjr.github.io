@@ -9,6 +9,7 @@ permalink: /lookntap/privacy/
   근거 (2026-11-03 출시 합친 매니페스트, 개발 세션 60b7e54): 우리 권한 POST_NOTIFICATIONS · VIBRATE + 접근성 서비스(LookService).
   광고 SDK(play-services-ads 25.4.0 · UMP 4.0.0)가 INTERNET · ACCESS_NETWORK_STATE · AD_ID · ACCESS_ADSERVICES_* · WAKE_LOCK · FOREGROUND_SERVICE(WorkManager)를 넣음.
   광고는 S1 아래 배너만, 빈 AdRequest(화면 내용 · 레시피 안 넘김), 후원(adFree)이면 UMP · 배너 없음 (SA10 · Q30). 결제(커피 후원 D9)는 b3bd2f4에서 들어옴 — billing 9.0.0이 com.android.vending.BILLING 추가.
+  녹화 중 터치 받기(b38cbbb · Q35) · 뒤로 · 홈 · 앱 열기(4e3a41f · Q34, queries LAUNCHER · HOME — 패키지 이름은 레시피에만, 밖으로 안 보냄) 2026-11-04 반영.
   그 밖 SDK: Play 인앱 업데이트(app-update-ktx). 자동 백업은 설정(sharedpref lookntap.xml)만 — 레시피 · 사진 · 기록은 백업 안 됨.
   이 문서 · 앱 안 공개 문구(ui-flow S2, Q27) · Play 접근성 신고(release/play-console/accessibility.md) · 데이터 보안 양식은 항상 같은 내용이어야 한다.
   함께 고칠 때: 인터넷 권한 · 광고 · 결제 · 의견 보내기 · 크래시 수집 · OCR(ML Kit) 출시 포함 · 공유(SH, 서버 업로드)가 들어오면
@@ -26,7 +27,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 
 **요약**
 - 앱은 회원가입이 없습니다. 앱이 화면에서 본 내용과 레시피 · 실행 기록은 **기기 밖으로 나가지 않고, 광고 · 분석에 쓰지 않습니다.**
-- 앱은 접근성 서비스로 화면의 글자 · 버튼 정보와 화면 사진을 봅니다. 이것은 **사용자가 화면 위 조작 패널을 띄워 둔 동안에만**(녹화 · 보정 · 실행 · 시작할 레시피 고르기), 사용자가 녹화한 탭을 다시 누르기 위해서만 씁니다. 패널을 닫으면 화면을 읽지 않습니다.
+- 앱은 접근성 서비스로 화면의 글자 · 버튼 정보와 화면 사진을 봅니다. 이것은 **사용자가 화면 위 조작 패널을 띄워 둔 동안에만**(녹화 · 보정 · 실행 · 시작할 레시피 고르기), 사용자가 녹화한 탭을 다시 누르기 위해서만 씁니다. 패널을 닫으면 화면을 읽지 않습니다. 녹화 중에는 화면 터치를 받아 누른 자리를 기억한 뒤 앱에 그대로 전달합니다.
 - 레시피 · 버튼 사진 · 실행 기록은 **기기 안에만** 저장됩니다. 녹화한 화면 사진은 고칠 때 쓰려고 레시피를 저장하기 전까지만 두고 지웁니다. 비밀번호 칸의 내용은 저장하지 않습니다.
 - 앱 홈 화면 아래의 배너 광고는 Google AdMob이 표시하며, 광고 ID 등은 Google이 처리합니다. 광고는 앱 화면에만 있고, 다른 앱 위에 뜨는 패널에는 없습니다.
 - 개발자는 사용자를 알아볼 수 있는 정보를 받지 않습니다.
@@ -35,7 +36,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 
 | 목적 | 내용 |
 |---|---|
-| 녹화 | 사용자가 누른 버튼이 무엇인지 기억 (글자 · ID · 위치 · 버튼 사진 · 주변 요소), 저장 전 편집에서 목표 · 조건 영역을 다시 고를 수 있게 단계마다 화면을 잠시 남기기 |
+| 녹화 | 사용자가 누른 버튼이 무엇인지 기억 (글자 · ID · 위치 · 버튼 사진 · 주변 요소), 녹화 중 화면 터치를 받아 누른 자리를 기억한 뒤 앱에 그대로 전달, 뒤로 · 홈 · 연 앱 기억, 저장 전 편집에서 목표 · 조건 영역을 다시 고를 수 있게 단계마다 화면을 잠시 남기기 |
 | 보정 · 실행 | 녹화한 버튼이 화면에 보이는지 찾아 대신 누르기, 찾지 못하면 멈추고 사용자에게 묻기 |
 | 실행 기록 | 실패한 단계를 사용자가 확인하고 고칠 수 있게 그 순간의 화면 정보를 남기기 |
 | 광고 표시 | 앱 홈 화면 하단 배너 광고 표시 (Google AdMob) |
@@ -53,6 +54,8 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 |---|---|---|
 | 화면의 UI 정보 (보이는 글자, 버튼 ID · 종류 · 위치) — 접근성 서비스 | 패널을 띄워 둔 동안에만 | 지금 화면에서 시작할 레시피 고르기, 누른 버튼을 알아보고 다시 찾기. 레시피에는 누른 버튼과 그 주변 요소만 저장 |
 | 화면 사진 (접근성 `takeScreenshot`) | 패널을 띄워 둔 동안에만 | 글자가 없는 버튼을 그림으로 찾기. 레시피에는 버튼 부분만 잘라 저장, 화면 전체는 찾은 뒤 버림 |
+| 녹화 중 화면 터치 (누른 자리 · 길게 누르기 · 밀기) — 접근성 오버레이 | 녹화할 때만 (상태 표시줄 · 내비게이션 바는 덮지 않음) | 클릭 신호를 보내지 않는 앱에서도 누른 자리를 단계로 기억하고, 같은 터치를 그 앱에 그대로 전달. 레시피에는 누른 자리 · 그 자리 버튼 정보 · 버튼 사진만 저장 |
+| 실행할 앱 (설치된 앱 중 녹화 중 연 앱의 패키지 이름, 기본 홈 앱) | 녹화할 때 | 녹화 중 홈으로 가거나 다른 앱을 열면 그 단계를 기억하고, 실행 때 그 앱을 엶. 레시피에만 저장 |
 | 녹화 화면 (단계마다 화면 전체 사진 · 그 화면 UI 정보) | 녹화할 때 | 저장 전 편집에서 목표 다시 고르기 · 숫자 조건 영역 고르기. **레시피를 저장하면 지움**, 녹화를 버리거나 레시피를 지우거나 저장하지 않고 7일이 지나도 지움 |
 | 레시피 (단계 · 버튼 정보 · 버튼 사진 · 대기 시간) | 사용자가 저장할 때 | 실행. 사용자가 지울 때까지 |
 | 실행 기록 (실패한 단계의 화면 사진 · UI 정보 · 후보) | 실행이 실패했을 때 | 실패 화면에서 고치기. 고치면 지우고 최근 몇 개만 남김 |
@@ -106,7 +109,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 
 | 권한 | 이유 | 거부하면 |
 |---|---|---|
-| 접근성 서비스 | 화면의 버튼을 알아보고(2-2) 녹화한 탭 · 스와이프 · 입력을 대신 하기, 볼륨 키 길게 눌러 멈추기, 화면 위 조작 패널 표시. 켜기 전에 앱 안에서 무엇을 보고 어떻게 쓰는지 안내하고 동의를 받습니다 | 앱의 핵심 기능을 쓸 수 없음 |
+| 접근성 서비스 | 화면의 버튼을 알아보고(2-2) 녹화한 탭 · 스와이프 · 입력 · 뒤로 · 홈 · 앱 열기를 대신 하기, 녹화 중에만 화면 터치를 받아 기억하고 앱에 전달, 볼륨 키 길게 눌러 멈추기, 화면 위 조작 패널 표시. 켜기 전에 앱 안에서 무엇을 보고 어떻게 쓰는지 안내하고 동의를 받습니다 | 앱의 핵심 기능을 쓸 수 없음 |
 | 알림 | 실행 중 표시, 끝 · 실패 알림 | 알림이 오지 않음 (실행은 됨) |
 | 진동 | 실행 끝 · 질문 알림 진동 | — |
 | 인터넷 · 네트워크 상태 · 광고 ID (광고 SDK가 추가) | 배너 광고 · 광고 동의 · 결제 · 글자 인식 모델 | — |
@@ -159,7 +162,7 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 
 **Summary**
 - There is no sign-up. What the app reads on screen, your recipes and run history **never leave your device and are not used for ads or analytics.**
-- The app uses an accessibility service to read on-screen text, button information and screenshots — **only while you keep the floating control panel open** (recording, calibrating, running, or choosing a recipe to start), and only to tap again the buttons you recorded. When the panel is closed, the app does not read the screen.
+- The app uses an accessibility service to read on-screen text, button information and screenshots — **only while you keep the floating control panel open** (recording, calibrating, running, or choosing a recipe to start), and only to tap again the buttons you recorded. When the panel is closed, the app does not read the screen. While recording, it receives your touches to remember where you tapped and passes them on to the app.
 - Recipes, button images and run history are stored **only on your device**. Recorded screenshots are kept only until you save the recipe, for fixing steps, then deleted. Password fields are never stored.
 - The banner ad at the bottom of the app's home screen is served by Google AdMob, which processes data such as the advertising ID. Ads appear only in the app's own screens, never in the floating panel over other apps.
 - The developer receives no information that identifies you.
@@ -168,7 +171,7 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 
 | Purpose | Details |
 |---|---|
-| Recording | Remembering which button you tapped (text, ID, position, button image, nearby elements), and briefly keeping each step's screen so you can re-choose targets or condition areas before saving |
+| Recording | Remembering which button you tapped (text, ID, position, button image, nearby elements), receiving your touches while recording to remember where you tapped and passing them on to the app, remembering Back, Home and apps you opened, and briefly keeping each step's screen so you can re-choose targets or condition areas before saving |
 | Calibrating and running | Waiting until a recorded button is visible and tapping it for you; stopping and asking you when it cannot be found |
 | Run history | Keeping the screen information of a failed step so you can review and fix it |
 | Showing ads | Showing a banner ad at the bottom of the app's home screen (Google AdMob) |
@@ -186,6 +189,8 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 |---|---|---|
 | On-screen UI information (visible text, view IDs, types, positions) — accessibility service | Only while the panel is open | Choosing a recipe to start on the current screen; identifying and finding the tapped button. A recipe stores only the tapped button and its nearby elements |
 | Screenshots (accessibility `takeScreenshot`) | Only while the panel is open | Finding buttons that have no text. A recipe stores only the cropped button; full screenshots are discarded after matching |
+| Touches while recording (where you tap, long-press or swipe) — accessibility overlay | Only while recording (the status bar and navigation bar are not covered) | Remembering where you tapped even in apps that send no click signal, and passing the same touch on to that app. A recipe stores only the tapped position, the button information there and the button image |
+| Apps to open (package names of installed apps you open while recording, the default home app) | While recording | Remembering a step when you go home or open another app while recording, and opening that app when running. Stored only in the recipe |
 | Recorded screens (a full screenshot and its UI information for each step) | While recording | Re-choosing a target or a number-condition area while editing before you save. **Deleted when you save the recipe**, and also when you discard the recording, delete the recipe, or after 7 days unsaved |
 | Recipes (steps, button information, button images, waits) | When you save | Running. Until you delete them |
 | Run history (screenshot, UI information and candidates of a failed step) | When a run fails | Fixing the step. Removed once fixed; only the most recent few are kept |
@@ -231,7 +236,7 @@ The developer does not sell or share your personal information with third partie
 
 | Permission | Why | If denied |
 |---|---|---|
-| Accessibility service | To identify buttons on screen (2-2) and perform the recorded taps, swipes and text input for you, to stop on a long press of the volume key, and to show the floating control panel. Before you turn it on, the app explains in the app what it reads and how it is used and asks for your consent | Core features unavailable |
+| Accessibility service | To identify buttons on screen (2-2) and perform the recorded taps, swipes, text input, back, home and app launches for you, to receive your touches only while recording and pass them on to the app, to stop on a long press of the volume key, and to show the floating control panel. Before you turn it on, the app explains in the app what it reads and how it is used and asks for your consent | Core features unavailable |
 | Notifications | Ongoing run status, finish and failure alerts | No alerts (runs still work) |
 | Vibration | Vibration for finish and question alerts | — |
 | Internet, network state, advertising ID (added by the ads SDK) | Banner ads, ad consent, payments, text recognition model | — |
