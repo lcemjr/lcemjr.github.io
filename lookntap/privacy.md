@@ -45,7 +45,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 
 ### 2-1. 개발자가 받는 정보
 
-**없습니다.** 앱에는 회원가입 · 의견 전송 · 분석 · 크래시 수집 기능이 없습니다. 광고 · 결제 서비스에서는 집계 보고서와 구매 확인 정보만 받습니다(2-3).
+**없습니다.** 앱에는 회원가입 · 의견 전송 · 분석 · 크래시 수집 기능이 없습니다. 광고 · 결제 · 글자 인식 서비스에서는 집계 보고서와 구매 확인 정보만 받습니다(2-3).
 
 ### 2-2. 기기 안에서만 처리하고 밖으로 보내지 않는 정보
 
@@ -68,6 +68,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 | 서비스 | 처리하는 정보 | 개발자가 받는 것 |
 |---|---|---|
 | Google AdMob (광고 · 광고 동의) | 광고 ID, IP 주소, 기기 · 앱 정보, 광고 상호작용, 광고 동의 선택 | 없음 (집계 수익 보고서만) |
+| Google ML Kit 글자 인식 (Google Play 서비스) | 기기 정보(제조사 · 모델 · OS 버전), 앱 패키지 이름 · 버전, 설치별 식별자, 성능 지표(처리 시간) — Google이 진단 · 사용 통계에 씀. **화면 사진과 읽은 글자는 보내지 않음** (기기 안에서 인식), 글자 인식 모델은 Play 서비스가 내려받음 | 없음 |
 | Google Play 결제 (후원) | 결제 수단, 구매 기록 | 구매한 후원 상품 종류 · 구매 확인 정보 (이름 · 결제 수단은 받지 않음) |
 | Google Play 인앱 업데이트 | 새 버전 확인 · 내려받기 (기기의 Play 스토어 앱이 처리) | 없음 |
 | Android 백업 (Google 계정, 사용자가 켠 경우) | **앱 설정만** — 레시피 · 사진 · 실행 기록은 백업하지 않음 | 없음 |
@@ -83,18 +84,19 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 
 ## 4. 제3자 제공 · 처리 위탁 및 국외 이전
 
-개발자는 개인정보를 제3자에게 제공하지 않습니다. 광고 · 결제를 위해 아래와 같이 Google이 처리하며, 이 과정에서 정보가 국외로 이전됩니다.
+개발자는 개인정보를 제3자에게 제공하지 않습니다. 광고 · 결제 · 글자 인식을 위해 아래와 같이 Google이 처리하며, 이 과정에서 정보가 국외로 이전됩니다.
 
 | 받는 자 | 이전 국가 | 이전 항목 | 목적 | 이전 일시 · 방법 | 보유 기간 |
 |---|---|---|---|---|---|
 | Google LLC (AdMob) | 미국 등 Google 데이터센터 소재국 | 2-3 광고 항목 | 광고 표시 · 측정 · 광고 동의 | 앱 홈 화면에서 광고를 불러올 때 네트워크(HTTPS)로 전송 | Google 정책에 따름 |
 | Google LLC (Google Play 결제) | 미국 등 | 2-3 결제 항목 | 결제 처리 | 결제할 때 | Google 정책에 따름 |
+| Google LLC (ML Kit) | 미국 등 | 2-3 글자 인식 항목 (화면 사진 · 글자 제외) | 진단 · 사용 통계 | 글자 인식을 쓸 때 네트워크(HTTPS)로 전송 | Google 정책에 따름 |
 
 화면 내용 · 레시피 · 실행 기록은 이전하지 않습니다. 광고 개인정보는 5절 방법으로 제한할 수 있습니다. Android 백업은 사용자 본인의 Google 계정에 저장되며 2-3의 앱 설정만 포함합니다.
 
 ## 5. 광고 ID 등 자동 수집 장치와 거부 방법
 
-- 앱은 쿠키 · 분석 도구를 쓰지 않습니다. 광고 SDK가 Android 광고 ID를 사용합니다.
+- 앱은 쿠키 · 분석 도구를 쓰지 않습니다. 광고 SDK가 Android 광고 ID를 사용합니다. 글자 인식(ML Kit)은 광고 ID가 아닌 설치별 식별자를 진단용으로 씁니다.
 - 거부 · 제한 방법
   - Android 설정 > 개인정보 보호(또는 Google) > 광고 > **광고 ID 삭제**
   - 유럽경제지역(EEA) · 영국 등: 앱 첫 실행 시 동의 창, 이후 앱의 **설정 > 광고 개인정보 설정**에서 변경
@@ -107,10 +109,10 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 | 접근성 서비스 | 화면의 버튼을 알아보고(2-2) 녹화한 탭 · 스와이프 · 입력을 대신 하기, 볼륨 키 길게 눌러 멈추기, 화면 위 조작 패널 표시. 켜기 전에 앱 안에서 무엇을 보고 어떻게 쓰는지 안내하고 동의를 받습니다 | 앱의 핵심 기능을 쓸 수 없음 |
 | 알림 | 실행 중 표시, 끝 · 실패 알림 | 알림이 오지 않음 (실행은 됨) |
 | 진동 | 실행 끝 · 질문 알림 진동 | — |
-| 인터넷 · 네트워크 상태 · 광고 ID (광고 SDK가 추가) | 배너 광고 · 광고 동의 · 결제 | — |
+| 인터넷 · 네트워크 상태 · 광고 ID (광고 SDK가 추가) | 배너 광고 · 광고 동의 · 결제 · 글자 인식 모델 | — |
 | Google Play 결제 (결제 라이브러리가 추가) | 후원 상품 구매 · 구매 확인 | 후원만 할 수 없음 (나머지 기능은 됨) |
 
-인터넷은 광고 · 결제에만 쓰며, 화면 내용 · 레시피를 보내는 데 쓰지 않습니다. 접근성 서비스는 언제든 Android 설정 > 접근성에서 끌 수 있습니다.
+인터넷은 광고 · 결제 · 글자 인식 모델 내려받기와 그 진단 정보에만 쓰며, 화면 내용 · 레시피를 보내는 데 쓰지 않습니다. 접근성 서비스는 언제든 Android 설정 > 접근성에서 끌 수 있습니다.
 
 ## 7. 이용자의 권리와 행사 방법
 
@@ -176,7 +178,7 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 
 ### 2-1. Information the developer receives
 
-**None.** The app has no sign-up, feedback upload, analytics or crash reporting. From the ad and billing services the developer receives only aggregated reports and purchase verification data (2-3).
+**None.** The app has no sign-up, feedback upload, analytics or crash reporting. From the ad, billing and text recognition services the developer receives only aggregated reports and purchase verification data (2-3).
 
 ### 2-2. Information processed on your device only
 
@@ -199,6 +201,7 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 | Service | Information | What the developer receives |
 |---|---|---|
 | Google AdMob (ads and ad consent) | Advertising ID, IP address, device and app information, ad interactions, consent choices | Nothing (aggregated revenue reports only) |
+| Google ML Kit text recognition (Google Play services) | Device information (manufacturer, model, OS version), app package name and version, a per-installation identifier, performance metrics (latency) — used by Google for diagnostics and usage analytics. **Screenshots and recognized text are not sent** (recognition runs on the device); the model is downloaded by Play services | Nothing |
 | Google Play Billing (tips) | Payment method, purchase history | Which tip product was purchased and purchase verification data (no name or payment details) |
 | Google Play in-app updates | Checking for and downloading new versions (handled by the Play Store app on your device) | Nothing |
 | Android backup (your Google account, if enabled) | **App settings only** — recipes, images and run history are not backed up | Nothing |
@@ -214,11 +217,11 @@ See the [Google Privacy Policy](https://policies.google.com/privacy) for how the
 
 ## 4. Processors and international transfers
 
-The developer does not sell or share your personal information with third parties. Google LLC processes data for ads (AdMob) and payments (Play Billing), which may involve transfer to the United States and other countries where Google operates data centers. On-screen content, recipes and run history are never transferred. Android backup is stored in your own Google account and contains only the app settings in 2-3.
+The developer does not sell or share your personal information with third parties. Google LLC processes data for ads (AdMob), payments (Play Billing) and text recognition diagnostics (ML Kit), which may involve transfer to the United States and other countries where Google operates data centers. On-screen content, recipes and run history are never transferred. Android backup is stored in your own Google account and contains only the app settings in 2-3.
 
 ## 5. Advertising ID and your choices
 
-- The app does not use cookies or analytics tools. The ads SDK uses the Android advertising ID.
+- The app does not use cookies or analytics tools. The ads SDK uses the Android advertising ID. Text recognition (ML Kit) uses a per-installation identifier for diagnostics, not the advertising ID.
 - You can delete or reset it in Android Settings > Privacy (or Google) > Ads.
 - In the EEA, UK and other applicable regions, you will see a consent form on first launch and can change your choice later in **Settings > Ad privacy settings**.
 - Legal basis (EEA/UK): consent for personalized ads.
@@ -231,10 +234,10 @@ The developer does not sell or share your personal information with third partie
 | Accessibility service | To identify buttons on screen (2-2) and perform the recorded taps, swipes and text input for you, to stop on a long press of the volume key, and to show the floating control panel. Before you turn it on, the app explains in the app what it reads and how it is used and asks for your consent | Core features unavailable |
 | Notifications | Ongoing run status, finish and failure alerts | No alerts (runs still work) |
 | Vibration | Vibration for finish and question alerts | — |
-| Internet, network state, advertising ID (added by the ads SDK) | Banner ads, ad consent, payments | — |
+| Internet, network state, advertising ID (added by the ads SDK) | Banner ads, ad consent, payments, text recognition model | — |
 | Google Play Billing (added by the billing library) | Buying tip products and verifying purchases | Tips unavailable (everything else works) |
 
-The Internet is used only for ads and payments, never to send on-screen content or recipes. You can turn off the accessibility service at any time in Android Settings > Accessibility.
+The Internet is used only for ads, payments, downloading the text recognition model and its diagnostics, never to send on-screen content or recipes. You can turn off the accessibility service at any time in Android Settings > Accessibility.
 
 ## 7. Your rights
 
