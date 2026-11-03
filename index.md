@@ -12,6 +12,8 @@ Android 앱을 만드는 1인 개발자입니다. · Independent Android app dev
 
 - **Floating Timer** — 게임 위에 떠 있는 타이머 · A floating timer over your games
   - [개인정보처리방침 · Privacy Policy](floating-timer/privacy/)
+- **Look n Tap (룩앤탭)** — 녹화한 버튼이 보이면 눌러 주는 화면 인식 매크로 · A smart auto clicker that taps the buttons you recorded when they appear
+  - [개인정보처리방침 · Privacy Policy](lookntap/privacy/)
 
 ## 문의 · Contact
 
