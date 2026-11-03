@@ -27,7 +27,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 **요약**
 - 앱은 회원가입이 없습니다. 앱이 화면에서 본 내용과 레시피 · 실행 기록은 **기기 밖으로 나가지 않고, 광고 · 분석에 쓰지 않습니다.**
 - 앱은 접근성 서비스로 화면의 글자 · 버튼 정보와 화면 사진을 봅니다. 이것은 **사용자가 화면 위 조작 패널을 띄워 둔 동안에만**(녹화 · 보정 · 실행 · 시작할 레시피 고르기), 사용자가 녹화한 탭을 다시 누르기 위해서만 씁니다. 패널을 닫으면 화면을 읽지 않습니다.
-- 레시피 · 버튼 사진 · 실행 기록은 **기기 안에만** 저장됩니다. 비밀번호 칸의 내용은 저장하지 않습니다.
+- 레시피 · 버튼 사진 · 실행 기록은 **기기 안에만** 저장됩니다. 녹화한 화면 사진은 고칠 때 쓰려고 레시피를 저장하기 전까지만 두고 지웁니다. 비밀번호 칸의 내용은 저장하지 않습니다.
 - 앱 홈 화면 아래의 배너 광고는 Google AdMob이 표시하며, 광고 ID 등은 Google이 처리합니다. 광고는 앱 화면에만 있고, 다른 앱 위에 뜨는 패널에는 없습니다.
 - 개발자는 사용자를 알아볼 수 있는 정보를 받지 않습니다.
 
@@ -35,7 +35,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 
 | 목적 | 내용 |
 |---|---|
-| 녹화 | 사용자가 누른 버튼이 무엇인지 기억 (글자 · ID · 위치 · 버튼 사진 · 주변 요소) |
+| 녹화 | 사용자가 누른 버튼이 무엇인지 기억 (글자 · ID · 위치 · 버튼 사진 · 주변 요소), 저장 전 편집에서 목표 · 조건 영역을 다시 고를 수 있게 단계마다 화면을 잠시 남기기 |
 | 보정 · 실행 | 녹화한 버튼이 화면에 보이는지 찾아 대신 누르기, 찾지 못하면 멈추고 사용자에게 묻기 |
 | 실행 기록 | 실패한 단계를 사용자가 확인하고 고칠 수 있게 그 순간의 화면 정보를 남기기 |
 | 광고 표시 | 앱 홈 화면 하단 배너 광고 표시 (Google AdMob) |
@@ -53,6 +53,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 |---|---|---|
 | 화면의 UI 정보 (보이는 글자, 버튼 ID · 종류 · 위치) — 접근성 서비스 | 패널을 띄워 둔 동안에만 | 지금 화면에서 시작할 레시피 고르기, 누른 버튼을 알아보고 다시 찾기. 레시피에는 누른 버튼과 그 주변 요소만 저장 |
 | 화면 사진 (접근성 `takeScreenshot`) | 패널을 띄워 둔 동안에만 | 글자가 없는 버튼을 그림으로 찾기. 레시피에는 버튼 부분만 잘라 저장, 화면 전체는 찾은 뒤 버림 |
+| 녹화 화면 (단계마다 화면 전체 사진 · 그 화면 UI 정보) | 녹화할 때 | 저장 전 편집에서 목표 다시 고르기 · 숫자 조건 영역 고르기. **레시피를 저장하면 지움**, 녹화를 버리거나 레시피를 지우거나 저장하지 않고 7일이 지나도 지움 |
 | 레시피 (단계 · 버튼 정보 · 버튼 사진 · 대기 시간) | 사용자가 저장할 때 | 실행. 사용자가 지울 때까지 |
 | 실행 기록 (실패한 단계의 화면 사진 · UI 정보 · 후보) | 실행이 실패했을 때 | 실패 화면에서 고치기. 고치면 지우고 최근 몇 개만 남김 |
 | 앱 설정 · 동의 기록 | — | 앱 동작 |
@@ -76,6 +77,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 ## 3. 보유 기간 및 파기
 
 - 기기 안의 정보: 사용자가 레시피 · 기록을 지우거나, 앱을 삭제하거나, 앱 데이터를 지우면 삭제됩니다.
+- 녹화 화면 사진은 레시피를 저장하면 지우고, 저장하지 않은 녹화는 7일 뒤 지웁니다.
 - 실행 기록은 고치면 지우고 최근 몇 개만 남깁니다.
 - 개발자가 보관하는 개인정보는 없습니다. 광고 · 결제 정보는 Google 정책에 따라 Google이 보관합니다.
 
@@ -156,7 +158,7 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 **Summary**
 - There is no sign-up. What the app reads on screen, your recipes and run history **never leave your device and are not used for ads or analytics.**
 - The app uses an accessibility service to read on-screen text, button information and screenshots — **only while you keep the floating control panel open** (recording, calibrating, running, or choosing a recipe to start), and only to tap again the buttons you recorded. When the panel is closed, the app does not read the screen.
-- Recipes, button images and run history are stored **only on your device**. Password fields are never stored.
+- Recipes, button images and run history are stored **only on your device**. Recorded screenshots are kept only until you save the recipe, for fixing steps, then deleted. Password fields are never stored.
 - The banner ad at the bottom of the app's home screen is served by Google AdMob, which processes data such as the advertising ID. Ads appear only in the app's own screens, never in the floating panel over other apps.
 - The developer receives no information that identifies you.
 
@@ -164,7 +166,7 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 
 | Purpose | Details |
 |---|---|
-| Recording | Remembering which button you tapped (text, ID, position, button image, nearby elements) |
+| Recording | Remembering which button you tapped (text, ID, position, button image, nearby elements), and briefly keeping each step's screen so you can re-choose targets or condition areas before saving |
 | Calibrating and running | Waiting until a recorded button is visible and tapping it for you; stopping and asking you when it cannot be found |
 | Run history | Keeping the screen information of a failed step so you can review and fix it |
 | Showing ads | Showing a banner ad at the bottom of the app's home screen (Google AdMob) |
@@ -182,6 +184,7 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 |---|---|---|
 | On-screen UI information (visible text, view IDs, types, positions) — accessibility service | Only while the panel is open | Choosing a recipe to start on the current screen; identifying and finding the tapped button. A recipe stores only the tapped button and its nearby elements |
 | Screenshots (accessibility `takeScreenshot`) | Only while the panel is open | Finding buttons that have no text. A recipe stores only the cropped button; full screenshots are discarded after matching |
+| Recorded screens (a full screenshot and its UI information for each step) | While recording | Re-choosing a target or a number-condition area while editing before you save. **Deleted when you save the recipe**, and also when you discard the recording, delete the recipe, or after 7 days unsaved |
 | Recipes (steps, button information, button images, waits) | When you save | Running. Until you delete them |
 | Run history (screenshot, UI information and candidates of a failed step) | When a run fails | Fixing the step. Removed once fixed; only the most recent few are kept |
 | App settings and consent record | — | Running the app |
@@ -205,6 +208,7 @@ See the [Google Privacy Policy](https://policies.google.com/privacy) for how the
 ## 3. Retention and deletion
 
 - On-device data is deleted when you delete recipes or history, uninstall the app, or clear its data.
+- Recorded screenshots are deleted when you save the recipe; unsaved recordings are deleted after 7 days.
 - Run history is removed once fixed, and only the most recent few entries are kept.
 - The developer keeps no personal data. Ad and billing data are kept by Google under Google's policies.
 
