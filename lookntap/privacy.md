@@ -112,7 +112,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 | 인터넷 · 네트워크 상태 · 광고 ID (광고 SDK가 추가) | 배너 광고 · 광고 동의 · 결제 · 글자 인식 모델 | — |
 | Google Play 결제 (결제 라이브러리가 추가) | 후원 상품 구매 · 구매 확인 | 후원만 할 수 없음 (나머지 기능은 됨) |
 
-인터넷은 광고 · 결제 · 글자 인식 모델 내려받기와 그 진단 정보에만 쓰며, 화면 내용 · 레시피를 보내는 데 쓰지 않습니다. 접근성 서비스는 언제든 Android 설정 > 접근성에서 끌 수 있습니다.
+인터넷은 광고 · 결제 · 글자 인식 모델 내려받기와 그 진단 정보에만 쓰며, 화면 내용 · 레시피를 보내는 데 쓰지 않습니다. 접근성 서비스는 언제든 Android 설정 > 접근성에서 끌 수 있습니다. 설정에서 '흔들어 멈추기'를 켜면 녹화 · 보정 · 실행 중에만 움직임 센서 값을 기기 안에서 읽고 저장하지 않습니다(따로 권한 없음).
 
 ## 7. 이용자의 권리와 행사 방법
 
@@ -237,7 +237,7 @@ The developer does not sell or share your personal information with third partie
 | Internet, network state, advertising ID (added by the ads SDK) | Banner ads, ad consent, payments, text recognition model | — |
 | Google Play Billing (added by the billing library) | Buying tip products and verifying purchases | Tips unavailable (everything else works) |
 
-The Internet is used only for ads, payments, downloading the text recognition model and its diagnostics, never to send on-screen content or recipes. You can turn off the accessibility service at any time in Android Settings > Accessibility.
+The Internet is used only for ads, payments, downloading the text recognition model and its diagnostics, never to send on-screen content or recipes. You can turn off the accessibility service at any time in Android Settings > Accessibility. If you turn on "shake to stop" in Settings, the app reads the motion sensor on the device only while recording, calibrating or running, and does not store it (no permission required).
 
 ## 7. Your rights
 
