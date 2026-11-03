@@ -8,7 +8,7 @@ permalink: /lookntap/privacy/
   틀: floating-timer release/site/floating-timer/privacy.md. 게시는 lcemjr.github.io 저장소에 복사 · push (사용자 확인 후).
   근거 (2026-11-03 출시 합친 매니페스트, 개발 세션 60b7e54): 우리 권한 POST_NOTIFICATIONS · VIBRATE + 접근성 서비스(LookService).
   광고 SDK(play-services-ads 25.4.0 · UMP 4.0.0)가 INTERNET · ACCESS_NETWORK_STATE · AD_ID · ACCESS_ADSERVICES_* · WAKE_LOCK · FOREGROUND_SERVICE(WorkManager)를 넣음.
-  광고는 S1 아래 배너만, 빈 AdRequest(화면 내용 · 레시피 안 넘김), 후원(adFree)이면 UMP · 배너 없음 (SA10 · Q30). 결제(커피 후원 D9)는 예정 — 미리 적어 둠.
+  광고는 S1 아래 배너만, 빈 AdRequest(화면 내용 · 레시피 안 넘김), 후원(adFree)이면 UMP · 배너 없음 (SA10 · Q30). 결제(커피 후원 D9)는 b3bd2f4에서 들어옴 — billing 9.0.0이 com.android.vending.BILLING 추가.
   그 밖 SDK: Play 인앱 업데이트(app-update-ktx). 자동 백업은 설정(sharedpref lookntap.xml)만 — 레시피 · 사진 · 기록은 백업 안 됨.
   이 문서 · 앱 안 공개 문구(ui-flow S2, Q27) · Play 접근성 신고(release/play-console/accessibility.md) · 데이터 보안 양식은 항상 같은 내용이어야 한다.
   함께 고칠 때: 인터넷 권한 · 광고 · 결제 · 의견 보내기 · 크래시 수집 · OCR(ML Kit) 출시 포함 · 공유(SH, 서버 업로드)가 들어오면
@@ -106,6 +106,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 | 알림 | 실행 중 표시, 끝 · 실패 알림 | 알림이 오지 않음 (실행은 됨) |
 | 진동 | 실행 끝 · 질문 알림 진동 | — |
 | 인터넷 · 네트워크 상태 · 광고 ID (광고 SDK가 추가) | 배너 광고 · 광고 동의 · 결제 | — |
+| Google Play 결제 (결제 라이브러리가 추가) | 후원 상품 구매 · 구매 확인 | 후원만 할 수 없음 (나머지 기능은 됨) |
 
 인터넷은 광고 · 결제에만 쓰며, 화면 내용 · 레시피를 보내는 데 쓰지 않습니다. 접근성 서비스는 언제든 Android 설정 > 접근성에서 끌 수 있습니다.
 
@@ -227,6 +228,7 @@ The developer does not sell or share your personal information with third partie
 | Notifications | Ongoing run status, finish and failure alerts | No alerts (runs still work) |
 | Vibration | Vibration for finish and question alerts | — |
 | Internet, network state, advertising ID (added by the ads SDK) | Banner ads, ad consent, payments | — |
+| Google Play Billing (added by the billing library) | Buying tip products and verifying purchases | Tips unavailable (everything else works) |
 
 The Internet is used only for ads and payments, never to send on-screen content or recipes. You can turn off the accessibility service at any time in Android Settings > Accessibility.
 
