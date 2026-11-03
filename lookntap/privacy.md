@@ -6,8 +6,10 @@ permalink: /lookntap/privacy/
 <!--
   초안 (2026-11-03, 관리 세션). 게시 위치: https://lcemjr.github.io/lookntap/privacy/
   틀: floating-timer release/site/floating-timer/privacy.md. 게시는 lcemjr.github.io 저장소에 복사 · push (사용자 확인 후).
-  근거 (2026-11-03 코드 기준): 매니페스트 권한 POST_NOTIFICATIONS · VIBRATE + 접근성 서비스(LookService), INTERNET 없음.
-  외부 SDK는 Play 인앱 업데이트(app-update-ktx)뿐. 자동 백업은 설정(sharedpref lookntap.xml)만 — 레시피 · 사진 · 기록은 백업 안 됨.
+  근거 (2026-11-03 출시 합친 매니페스트, 개발 세션 60b7e54): 우리 권한 POST_NOTIFICATIONS · VIBRATE + 접근성 서비스(LookService).
+  광고 SDK(play-services-ads 25.4.0 · UMP 4.0.0)가 INTERNET · ACCESS_NETWORK_STATE · AD_ID · ACCESS_ADSERVICES_* · WAKE_LOCK · FOREGROUND_SERVICE(WorkManager)를 넣음.
+  광고는 S1 아래 배너만, 빈 AdRequest(화면 내용 · 레시피 안 넘김), 후원(adFree)이면 UMP · 배너 없음 (SA10 · Q30). 결제(커피 후원 D9)는 예정 — 미리 적어 둠.
+  그 밖 SDK: Play 인앱 업데이트(app-update-ktx). 자동 백업은 설정(sharedpref lookntap.xml)만 — 레시피 · 사진 · 기록은 백업 안 됨.
   이 문서 · 앱 안 공개 문구(ui-flow S2, Q27) · Play 접근성 신고(release/play-console/accessibility.md) · 데이터 보안 양식은 항상 같은 내용이어야 한다.
   함께 고칠 때: 인터넷 권한 · 광고 · 결제 · 의견 보내기 · 크래시 수집 · OCR(ML Kit) 출시 포함 · 공유(SH, 서버 업로드)가 들어오면
   2절 · 4절 · 6절과 영어 같은 절에 항목 추가. 공유를 넣으면 '사용자가 미리 보고 확인한 레시피만 올림'(SH1 · SH2)을 명시.
@@ -23,10 +25,11 @@ permalink: /lookntap/privacy/
 LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의 개인정보를 「개인정보 보호법」에 따라 처리하며, 다음과 같이 처리방침을 공개합니다.
 
 **요약**
-- 앱은 회원가입이 없고, **인터넷 권한이 없습니다.** 앱이 보거나 만든 정보는 기기 밖으로 나가지 않습니다.
+- 앱은 회원가입이 없습니다. 앱이 화면에서 본 내용과 레시피 · 실행 기록은 **기기 밖으로 나가지 않고, 광고 · 분석에 쓰지 않습니다.**
 - 앱은 접근성 서비스로 화면의 글자 · 버튼 정보와 화면 사진을 봅니다. 이것은 **사용자가 화면 위 조작 패널을 띄워 둔 동안에만**(녹화 · 보정 · 실행 · 시작할 레시피 고르기), 사용자가 녹화한 탭을 다시 누르기 위해서만 씁니다. 패널을 닫으면 화면을 읽지 않습니다.
 - 레시피 · 버튼 사진 · 실행 기록은 **기기 안에만** 저장됩니다. 비밀번호 칸의 내용은 저장하지 않습니다.
-- 개발자는 사용자에 관한 어떤 정보도 받지 않습니다.
+- 앱 홈 화면 아래의 배너 광고는 Google AdMob이 표시하며, 광고 ID 등은 Google이 처리합니다. 광고는 앱 화면에만 있고, 다른 앱 위에 뜨는 패널에는 없습니다.
+- 개발자는 사용자를 알아볼 수 있는 정보를 받지 않습니다.
 
 ## 1. 처리 목적
 
@@ -35,12 +38,14 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 | 녹화 | 사용자가 누른 버튼이 무엇인지 기억 (글자 · ID · 위치 · 버튼 사진 · 주변 요소) |
 | 보정 · 실행 | 녹화한 버튼이 화면에 보이는지 찾아 대신 누르기, 찾지 못하면 멈추고 사용자에게 묻기 |
 | 실행 기록 | 실패한 단계를 사용자가 확인하고 고칠 수 있게 그 순간의 화면 정보를 남기기 |
+| 광고 표시 | 앱 홈 화면 하단 배너 광고 표시 (Google AdMob) |
+| 후원 처리 | 인앱 후원 결제 확인 및 후원자 광고 제거 (Google Play 결제, 후원 기능을 제공하는 경우) |
 
 ## 2. 처리하는 개인정보 항목
 
 ### 2-1. 개발자가 받는 정보
 
-**없습니다.** 앱에는 회원가입 · 의견 전송 · 광고 · 분석 · 크래시 수집 기능이 없고, 인터넷 권한도 없습니다.
+**없습니다.** 앱에는 회원가입 · 의견 전송 · 분석 · 크래시 수집 기능이 없습니다. 광고 · 결제 서비스에서는 집계 보고서와 구매 확인 정보만 받습니다(2-3).
 
 ### 2-2. 기기 안에서만 처리하고 밖으로 보내지 않는 정보
 
@@ -55,11 +60,14 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 - **비밀번호 칸**(Android가 비밀번호로 표시한 입력 칸)의 내용은 녹화 · 저장하지 않습니다.
 - 실행할 때마다 바뀌는 입력 값은 실행 · 보정 때 화면에서 물어보고 저장하지 않습니다.
 - Android가 보안 화면으로 막은 화면(은행 앱 등)은 사진을 찍을 수 없습니다.
+- 위 정보는 광고 요청에 넣지 않습니다. 광고 SDK는 앱이 화면에서 읽은 내용 · 레시피를 받지 않습니다.
 
 ### 2-3. 제3자 서비스
 
 | 서비스 | 처리하는 정보 | 개발자가 받는 것 |
 |---|---|---|
+| Google AdMob (광고 · 광고 동의) | 광고 ID, IP 주소, 기기 · 앱 정보, 광고 상호작용, 광고 동의 선택 | 없음 (집계 수익 보고서만) |
+| Google Play 결제 (후원) | 결제 수단, 구매 기록 | 구매한 후원 상품 종류 · 구매 확인 정보 (이름 · 결제 수단은 받지 않음) |
 | Google Play 인앱 업데이트 | 새 버전 확인 · 내려받기 (기기의 Play 스토어 앱이 처리) | 없음 |
 | Android 백업 (Google 계정, 사용자가 켠 경우) | **앱 설정만** — 레시피 · 사진 · 실행 기록은 백업하지 않음 | 없음 |
 
@@ -69,15 +77,26 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 
 - 기기 안의 정보: 사용자가 레시피 · 기록을 지우거나, 앱을 삭제하거나, 앱 데이터를 지우면 삭제됩니다.
 - 실행 기록은 고치면 지우고 최근 몇 개만 남깁니다.
-- 개발자가 보관하는 정보는 없습니다.
+- 개발자가 보관하는 개인정보는 없습니다. 광고 · 결제 정보는 Google 정책에 따라 Google이 보관합니다.
 
-## 4. 제3자 제공 · 처리 위탁 · 국외 이전
+## 4. 제3자 제공 · 처리 위탁 및 국외 이전
 
-개발자는 개인정보를 받지 않으므로 제3자에게 제공하거나 처리를 맡기거나 국외로 이전하지 않습니다. (Android 백업은 사용자 본인의 Google 계정에 저장되며 2-3의 앱 설정만 포함합니다.)
+개발자는 개인정보를 제3자에게 제공하지 않습니다. 광고 · 결제를 위해 아래와 같이 Google이 처리하며, 이 과정에서 정보가 국외로 이전됩니다.
 
-## 5. 자동 수집 장치
+| 받는 자 | 이전 국가 | 이전 항목 | 목적 | 이전 일시 · 방법 | 보유 기간 |
+|---|---|---|---|---|---|
+| Google LLC (AdMob) | 미국 등 Google 데이터센터 소재국 | 2-3 광고 항목 | 광고 표시 · 측정 · 광고 동의 | 앱 홈 화면에서 광고를 불러올 때 네트워크(HTTPS)로 전송 | Google 정책에 따름 |
+| Google LLC (Google Play 결제) | 미국 등 | 2-3 결제 항목 | 결제 처리 | 결제할 때 | Google 정책에 따름 |
 
-앱은 쿠키 · 광고 ID · 분석 도구를 쓰지 않습니다.
+화면 내용 · 레시피 · 실행 기록은 이전하지 않습니다. 광고 개인정보는 5절 방법으로 제한할 수 있습니다. Android 백업은 사용자 본인의 Google 계정에 저장되며 2-3의 앱 설정만 포함합니다.
+
+## 5. 광고 ID 등 자동 수집 장치와 거부 방법
+
+- 앱은 쿠키 · 분석 도구를 쓰지 않습니다. 광고 SDK가 Android 광고 ID를 사용합니다.
+- 거부 · 제한 방법
+  - Android 설정 > 개인정보 보호(또는 Google) > 광고 > **광고 ID 삭제**
+  - 유럽경제지역(EEA) · 영국 등: 앱 첫 실행 시 동의 창, 이후 앱의 **설정 > 광고 개인정보 설정**에서 변경
+- 후원을 한 번이라도 하면 광고와 광고 동의 창이 표시되지 않습니다.
 
 ## 6. 앱이 사용하는 권한
 
@@ -86,22 +105,23 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 | 접근성 서비스 | 화면의 버튼을 알아보고(2-2) 녹화한 탭 · 스와이프 · 입력을 대신 하기, 볼륨 키 길게 눌러 멈추기, 화면 위 조작 패널 표시. 켜기 전에 앱 안에서 무엇을 보고 어떻게 쓰는지 안내하고 동의를 받습니다 | 앱의 핵심 기능을 쓸 수 없음 |
 | 알림 | 실행 중 표시, 끝 · 실패 알림 | 알림이 오지 않음 (실행은 됨) |
 | 진동 | 실행 끝 · 질문 알림 진동 | — |
+| 인터넷 · 네트워크 상태 · 광고 ID (광고 SDK가 추가) | 배너 광고 · 광고 동의 · 결제 | — |
 
-앱은 **인터넷 권한을 요청하지 않습니다.** 접근성 서비스는 언제든 Android 설정 > 접근성에서 끌 수 있습니다.
+인터넷은 광고 · 결제에만 쓰며, 화면 내용 · 레시피를 보내는 데 쓰지 않습니다. 접근성 서비스는 언제든 Android 설정 > 접근성에서 끌 수 있습니다.
 
 ## 7. 이용자의 권리와 행사 방법
 
-개발자는 이용자의 개인정보를 갖고 있지 않습니다. 기기 안의 정보는 앱에서 레시피 · 기록을 지우거나 앱 데이터를 지워 직접 삭제할 수 있습니다. 궁금한 점은 아래 이메일로 문의해 주세요.
+개발자는 이용자를 알아볼 수 있는 개인정보를 갖고 있지 않습니다. 광고 개인정보는 5절 방법으로 바꿀 수 있습니다. 기기 안의 정보는 앱에서 레시피 · 기록을 지우거나 앱 데이터를 지워 직접 삭제할 수 있습니다. 궁금한 점은 아래 이메일로 문의해 주세요.
 
 ## 8. 안전성 확보 조치
 
 - 모든 정보는 다른 앱이 읽을 수 없는 앱 전용 저장소에 저장됩니다.
-- 앱은 인터넷 권한이 없어 정보를 기기 밖으로 보낼 수 없습니다.
+- 화면 내용 · 레시피 · 실행 기록을 네트워크로 보내는 기능이 없고, 광고 요청에도 넣지 않습니다.
 - 접근성 서비스가 켜져 있어도 사용자가 패널을 띄우지 않으면 화면을 읽지 않고, 앱 안 공개 · 동의 전에는 아무것도 읽지 않습니다.
 
 ## 9. 아동의 개인정보
 
-앱은 만 14세 미만 아동을 대상으로 하지 않으며, 아동의 개인정보를 받지 않습니다.
+앱은 만 14세 미만 아동을 대상으로 하지 않습니다. 만 14세 미만 아동의 개인정보를 받은 것을 알게 되면 바로 삭제합니다.
 
 ## 10. 개인정보 보호책임자
 
@@ -133,10 +153,11 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 This policy explains how LCEMJR ("the developer") handles information in the Look n Tap app ("the app").
 
 **Summary**
-- There is no sign-up, and the app **does not have the Internet permission**. Nothing the app sees or creates leaves your device.
+- There is no sign-up. What the app reads on screen, your recipes and run history **never leave your device and are not used for ads or analytics.**
 - The app uses an accessibility service to read on-screen text, button information and screenshots — **only while you keep the floating control panel open** (recording, calibrating, running, or choosing a recipe to start), and only to tap again the buttons you recorded. When the panel is closed, the app does not read the screen.
 - Recipes, button images and run history are stored **only on your device**. Password fields are never stored.
-- The developer receives no information about you.
+- The banner ad at the bottom of the app's home screen is served by Google AdMob, which processes data such as the advertising ID. Ads appear only in the app's own screens, never in the floating panel over other apps.
+- The developer receives no information that identifies you.
 
 ## 1. Purposes
 
@@ -145,12 +166,14 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 | Recording | Remembering which button you tapped (text, ID, position, button image, nearby elements) |
 | Calibrating and running | Waiting until a recorded button is visible and tapping it for you; stopping and asking you when it cannot be found |
 | Run history | Keeping the screen information of a failed step so you can review and fix it |
+| Showing ads | Showing a banner ad at the bottom of the app's home screen (Google AdMob) |
+| Processing tips | Verifying in-app tip purchases and removing ads for supporters (Google Play Billing, where tips are offered) |
 
 ## 2. Information we process
 
 ### 2-1. Information the developer receives
 
-**None.** The app has no sign-up, feedback upload, ads, analytics or crash reporting, and no Internet permission.
+**None.** The app has no sign-up, feedback upload, analytics or crash reporting. From the ad and billing services the developer receives only aggregated reports and purchase verification data (2-3).
 
 ### 2-2. Information processed on your device only
 
@@ -165,11 +188,14 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 - Contents of **password fields** (input fields Android marks as passwords) are never recorded or stored.
 - Values that change on every run are asked on screen during the run and are not stored.
 - Screens protected by Android as secure (e.g. banking apps) cannot be captured.
+- None of the above is included in ad requests. The ads SDK does not receive what the app reads on screen or your recipes.
 
 ### 2-3. Third-party services
 
 | Service | Information | What the developer receives |
 |---|---|---|
+| Google AdMob (ads and ad consent) | Advertising ID, IP address, device and app information, ad interactions, consent choices | Nothing (aggregated revenue reports only) |
+| Google Play Billing (tips) | Payment method, purchase history | Which tip product was purchased and purchase verification data (no name or payment details) |
 | Google Play in-app updates | Checking for and downloading new versions (handled by the Play Store app on your device) | Nothing |
 | Android backup (your Google account, if enabled) | **App settings only** — recipes, images and run history are not backed up | Nothing |
 
@@ -179,15 +205,19 @@ See the [Google Privacy Policy](https://policies.google.com/privacy) for how the
 
 - On-device data is deleted when you delete recipes or history, uninstall the app, or clear its data.
 - Run history is removed once fixed, and only the most recent few entries are kept.
-- The developer keeps no data.
+- The developer keeps no personal data. Ad and billing data are kept by Google under Google's policies.
 
-## 4. Sharing and international transfers
+## 4. Processors and international transfers
 
-Because the developer receives no personal information, none is shared with third parties, processed on the developer's behalf, or transferred abroad. (Android backup is stored in your own Google account and contains only the app settings in 2-3.)
+The developer does not sell or share your personal information with third parties. Google LLC processes data for ads (AdMob) and payments (Play Billing), which may involve transfer to the United States and other countries where Google operates data centers. On-screen content, recipes and run history are never transferred. Android backup is stored in your own Google account and contains only the app settings in 2-3.
 
-## 5. Cookies and identifiers
+## 5. Advertising ID and your choices
 
-The app does not use cookies, the advertising ID, or analytics tools.
+- The app does not use cookies or analytics tools. The ads SDK uses the Android advertising ID.
+- You can delete or reset it in Android Settings > Privacy (or Google) > Ads.
+- In the EEA, UK and other applicable regions, you will see a consent form on first launch and can change your choice later in **Settings > Ad privacy settings**.
+- Legal basis (EEA/UK): consent for personalized ads.
+- Ads and the consent form are not shown once you make any tip purchase.
 
 ## 6. Permissions
 
@@ -196,16 +226,17 @@ The app does not use cookies, the advertising ID, or analytics tools.
 | Accessibility service | To identify buttons on screen (2-2) and perform the recorded taps, swipes and text input for you, to stop on a long press of the volume key, and to show the floating control panel. Before you turn it on, the app explains in the app what it reads and how it is used and asks for your consent | Core features unavailable |
 | Notifications | Ongoing run status, finish and failure alerts | No alerts (runs still work) |
 | Vibration | Vibration for finish and question alerts | — |
+| Internet, network state, advertising ID (added by the ads SDK) | Banner ads, ad consent, payments | — |
 
-The app **does not request the Internet permission.** You can turn off the accessibility service at any time in Android Settings > Accessibility.
+The Internet is used only for ads and payments, never to send on-screen content or recipes. You can turn off the accessibility service at any time in Android Settings > Accessibility.
 
 ## 7. Your rights
 
-The developer holds no personal information about you. You can delete on-device data yourself by deleting recipes or history in the app, or by clearing the app's data. For questions, email the address below.
+The developer holds no personal information that identifies you. You can change ad privacy choices as described in section 5. You can delete on-device data yourself by deleting recipes or history in the app, or by clearing the app's data. For questions, email the address below.
 
 ## 8. Children
 
-The app is not directed to children under 14 (under 13 in the United States) and does not collect children's personal information.
+The app is not directed to children under 14 (under 13 in the United States) If we learn we have received a child's personal information, we will delete it.
 
 ## 9. Contact
 
