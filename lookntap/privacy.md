@@ -11,6 +11,7 @@ permalink: /lookntap/privacy/
   광고는 S1 아래 배너만, 빈 AdRequest(화면 내용 · 레시피 안 넘김), 후원(adFree)이면 UMP · 배너 없음 (SA10 · Q30). 결제(커피 후원 D9)는 b3bd2f4에서 들어옴 — billing 9.0.0이 com.android.vending.BILLING 추가.
   녹화 중 터치 받기(b38cbbb · Q35) · 뒤로 · 홈 · 앱 열기(4e3a41f · Q34, queries LAUNCHER · HOME — 패키지 이름은 레시피에만, 밖으로 안 보냄) 2026-11-04 반영.
   실행이 막혔을 때(c87254f · Q36): 팝업 규칙 · 견본은 레시피에, 배터리 온도는 읽기만 (2026-11-04 사후 점검).
+  진입 설계(1699db3 · Q42 · Q43): 알림창 · 빠른 설정 단계, 홈 위젯 찾기, 처음부터 다시 열기(CLEAR_TASK) 2026-11-04 반영.
   그 밖 SDK: Play 인앱 업데이트(app-update-ktx). 자동 백업은 설정(sharedpref lookntap.xml)만 — 레시피 · 사진 · 기록은 백업 안 됨.
   이 문서 · 앱 안 공개 문구(ui-flow S2, Q27) · Play 접근성 신고(release/play-console/accessibility.md) · 데이터 보안 양식은 항상 같은 내용이어야 한다.
   함께 고칠 때: 인터넷 권한 · 광고 · 결제 · 의견 보내기 · 크래시 수집 · OCR(ML Kit) 출시 포함 · 공유(SH, 서버 업로드)가 들어오면
@@ -56,7 +57,8 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 | 화면의 UI 정보 (보이는 글자, 버튼 ID · 종류 · 위치) — 접근성 서비스 | 패널을 띄워 둔 동안에만 | 지금 화면에서 시작할 레시피 고르기, 누른 버튼을 알아보고 다시 찾기. 레시피에는 누른 버튼과 그 주변 요소만 저장 |
 | 화면 사진 (접근성 `takeScreenshot`) | 패널을 띄워 둔 동안에만 | 글자가 없는 버튼을 그림으로 찾기. 레시피에는 버튼 부분만 잘라 저장, 화면 전체는 찾은 뒤 버림 |
 | 녹화 중 화면 터치 (누른 자리 · 길게 누르기 · 밀기) — 접근성 오버레이 | 녹화할 때만 (상태 표시줄 · 내비게이션 바는 덮지 않음) | 클릭 신호를 보내지 않는 앱에서도 누른 자리를 단계로 기억하고, 같은 터치를 그 앱에 그대로 전달. 레시피에는 누른 자리 · 그 자리 버튼 정보 · 버튼 사진만 저장 |
-| 실행할 앱 (설치된 앱 중 녹화 중 연 앱의 패키지 이름, 기본 홈 앱) | 녹화할 때 | 녹화 중 홈으로 가거나 다른 앱을 열면 그 단계를 기억하고, 실행 때 그 앱을 엶. 레시피에만 저장 |
+| 실행할 앱 (설치된 앱 중 녹화 중 연 앱의 패키지 이름, 기본 홈 앱) | 녹화할 때 | 녹화 중 홈으로 가거나 다른 앱을 열면 그 단계를 기억하고, 실행 때 그 앱을 엶(녹화 때와 다른 화면이면 묻고 그 앱을 첫 화면부터 다시 엶). 레시피에만 저장 |
+| 알림창 · 빠른 설정 (녹화 중 누른 알림의 앱 · 제목, 누른 타일 글자) | 녹화 중 알림창을 열어 누를 때 | 실행 때 알림창을 열어 같은 앱 · 제목의 알림을 찾아 누름. 레시피에는 누른 알림의 앱 · 제목(버튼이면 버튼 글자)만 저장, 다른 알림 내용은 저장하지 않음 |
 | 녹화 화면 (단계마다 화면 전체 사진 · 그 화면 UI 정보) | 녹화할 때 | 저장 전 편집에서 목표 다시 고르기 · 숫자 조건 영역 고르기. **레시피를 저장하면 지움**, 녹화를 버리거나 레시피를 지우거나 저장하지 않고 7일이 지나도 지움 |
 | 레시피 (단계 · 버튼 정보 · 버튼 사진 · 대기 시간 · 사용자가 가르친 팝업 닫기 버튼 · 견본) | 사용자가 저장할 때 | 실행. 사용자가 지울 때까지 |
 | 실행 기록 (실패한 단계의 화면 사진 · UI 정보 · 후보) | 실행이 실패했을 때 | 실패 화면에서 고치기. 고치면 지우고 최근 몇 개만 남김 |
@@ -191,7 +193,8 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 | On-screen UI information (visible text, view IDs, types, positions) — accessibility service | Only while the panel is open | Choosing a recipe to start on the current screen; identifying and finding the tapped button. A recipe stores only the tapped button and its nearby elements |
 | Screenshots (accessibility `takeScreenshot`) | Only while the panel is open | Finding buttons that have no text. A recipe stores only the cropped button; full screenshots are discarded after matching |
 | Touches while recording (where you tap, long-press or swipe) — accessibility overlay | Only while recording (the status bar and navigation bar are not covered) | Remembering where you tapped even in apps that send no click signal, and passing the same touch on to that app. A recipe stores only the tapped position, the button information there and the button image |
-| Apps to open (package names of installed apps you open while recording, the default home app) | While recording | Remembering a step when you go home or open another app while recording, and opening that app when running. Stored only in the recipe |
+| Apps to open (package names of installed apps you open while recording, the default home app) | While recording | Remembering a step when you go home or open another app while recording, and opening that app when running (if it opens on a different screen, the app asks and reopens it from its first screen). Stored only in the recipe |
+| Notification shade and quick settings (the app and title of a notification you tap while recording, the tile text) | When you open the shade and tap while recording | Opening the shade when running and tapping a notification from the same app with the same title. A recipe stores only that notification's app and title (or the button text), not other notifications |
 | Recorded screens (a full screenshot and its UI information for each step) | While recording | Re-choosing a target or a number-condition area while editing before you save. **Deleted when you save the recipe**, and also when you discard the recording, delete the recipe, or after 7 days unsaved |
 | Recipes (steps, button information, button images, waits, popup close buttons and samples you taught) | When you save | Running. Until you delete them |
 | Run history (screenshot, UI information and candidates of a failed step) | When a run fails | Fixing the step. Removed once fixed; only the most recent few are kept |
