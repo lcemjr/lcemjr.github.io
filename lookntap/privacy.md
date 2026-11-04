@@ -10,6 +10,7 @@ permalink: /lookntap/privacy/
   광고 SDK(play-services-ads 25.4.0 · UMP 4.0.0)가 INTERNET · ACCESS_NETWORK_STATE · AD_ID · ACCESS_ADSERVICES_* · WAKE_LOCK · FOREGROUND_SERVICE(WorkManager)를 넣음.
   광고는 S1 아래 배너만, 빈 AdRequest(화면 내용 · 레시피 안 넘김), 후원(adFree)이면 UMP · 배너 없음 (SA10 · Q30). 결제(커피 후원 D9)는 b3bd2f4에서 들어옴 — billing 9.0.0이 com.android.vending.BILLING 추가.
   녹화 중 터치 받기(b38cbbb · Q35) · 뒤로 · 홈 · 앱 열기(4e3a41f · Q34, queries LAUNCHER · HOME — 패키지 이름은 레시피에만, 밖으로 안 보냄) 2026-11-04 반영.
+  실행이 막혔을 때(c87254f · Q36): 팝업 규칙 · 견본은 레시피에, 배터리 온도는 읽기만 (2026-11-04 사후 점검).
   그 밖 SDK: Play 인앱 업데이트(app-update-ktx). 자동 백업은 설정(sharedpref lookntap.xml)만 — 레시피 · 사진 · 기록은 백업 안 됨.
   이 문서 · 앱 안 공개 문구(ui-flow S2, Q27) · Play 접근성 신고(release/play-console/accessibility.md) · 데이터 보안 양식은 항상 같은 내용이어야 한다.
   함께 고칠 때: 인터넷 권한 · 광고 · 결제 · 의견 보내기 · 크래시 수집 · OCR(ML Kit) 출시 포함 · 공유(SH, 서버 업로드)가 들어오면
@@ -57,7 +58,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 | 녹화 중 화면 터치 (누른 자리 · 길게 누르기 · 밀기) — 접근성 오버레이 | 녹화할 때만 (상태 표시줄 · 내비게이션 바는 덮지 않음) | 클릭 신호를 보내지 않는 앱에서도 누른 자리를 단계로 기억하고, 같은 터치를 그 앱에 그대로 전달. 레시피에는 누른 자리 · 그 자리 버튼 정보 · 버튼 사진만 저장 |
 | 실행할 앱 (설치된 앱 중 녹화 중 연 앱의 패키지 이름, 기본 홈 앱) | 녹화할 때 | 녹화 중 홈으로 가거나 다른 앱을 열면 그 단계를 기억하고, 실행 때 그 앱을 엶. 레시피에만 저장 |
 | 녹화 화면 (단계마다 화면 전체 사진 · 그 화면 UI 정보) | 녹화할 때 | 저장 전 편집에서 목표 다시 고르기 · 숫자 조건 영역 고르기. **레시피를 저장하면 지움**, 녹화를 버리거나 레시피를 지우거나 저장하지 않고 7일이 지나도 지움 |
-| 레시피 (단계 · 버튼 정보 · 버튼 사진 · 대기 시간) | 사용자가 저장할 때 | 실행. 사용자가 지울 때까지 |
+| 레시피 (단계 · 버튼 정보 · 버튼 사진 · 대기 시간 · 사용자가 가르친 팝업 닫기 버튼 · 견본) | 사용자가 저장할 때 | 실행. 사용자가 지울 때까지 |
 | 실행 기록 (실패한 단계의 화면 사진 · UI 정보 · 후보) | 실행이 실패했을 때 | 실패 화면에서 고치기. 고치면 지우고 최근 몇 개만 남김 |
 | 앱 설정 · 동의 기록 | — | 앱 동작 |
 
@@ -115,7 +116,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 | 인터넷 · 네트워크 상태 · 광고 ID (광고 SDK가 추가) | 배너 광고 · 광고 동의 · 결제 · 글자 인식 모델 | — |
 | Google Play 결제 (결제 라이브러리가 추가) | 후원 상품 구매 · 구매 확인 | 후원만 할 수 없음 (나머지 기능은 됨) |
 
-인터넷은 광고 · 결제 · 글자 인식 모델 내려받기와 그 진단 정보에만 쓰며, 화면 내용 · 레시피를 보내는 데 쓰지 않습니다. 접근성 서비스는 언제든 Android 설정 > 접근성에서 끌 수 있습니다. 설정에서 '흔들어 멈추기'를 켜면 녹화 · 보정 · 실행 중에만 움직임 센서 값을 기기 안에서 읽고 저장하지 않습니다(따로 권한 없음).
+인터넷은 광고 · 결제 · 글자 인식 모델 내려받기와 그 진단 정보에만 쓰며, 화면 내용 · 레시피를 보내는 데 쓰지 않습니다. 접근성 서비스는 언제든 Android 설정 > 접근성에서 끌 수 있습니다. 설정에서 '흔들어 멈추기'를 켜면 녹화 · 보정 · 실행 중에만 움직임 센서 값을 기기 안에서 읽고 저장하지 않습니다(따로 권한 없음). 실행 중에는 기기가 뜨거워지지 않게 배터리 온도 · 잔량 · 충전 여부를 기기 안에서 읽어 찾는 간격을 늘리거나 멈추며, 저장하거나 보내지 않습니다.
 
 ## 7. 이용자의 권리와 행사 방법
 
@@ -192,7 +193,7 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 | Touches while recording (where you tap, long-press or swipe) — accessibility overlay | Only while recording (the status bar and navigation bar are not covered) | Remembering where you tapped even in apps that send no click signal, and passing the same touch on to that app. A recipe stores only the tapped position, the button information there and the button image |
 | Apps to open (package names of installed apps you open while recording, the default home app) | While recording | Remembering a step when you go home or open another app while recording, and opening that app when running. Stored only in the recipe |
 | Recorded screens (a full screenshot and its UI information for each step) | While recording | Re-choosing a target or a number-condition area while editing before you save. **Deleted when you save the recipe**, and also when you discard the recording, delete the recipe, or after 7 days unsaved |
-| Recipes (steps, button information, button images, waits) | When you save | Running. Until you delete them |
+| Recipes (steps, button information, button images, waits, popup close buttons and samples you taught) | When you save | Running. Until you delete them |
 | Run history (screenshot, UI information and candidates of a failed step) | When a run fails | Fixing the step. Removed once fixed; only the most recent few are kept |
 | App settings and consent record | — | Running the app |
 
@@ -242,7 +243,7 @@ The developer does not sell or share your personal information with third partie
 | Internet, network state, advertising ID (added by the ads SDK) | Banner ads, ad consent, payments, text recognition model | — |
 | Google Play Billing (added by the billing library) | Buying tip products and verifying purchases | Tips unavailable (everything else works) |
 
-The Internet is used only for ads, payments, downloading the text recognition model and its diagnostics, never to send on-screen content or recipes. You can turn off the accessibility service at any time in Android Settings > Accessibility. If you turn on "shake to stop" in Settings, the app reads the motion sensor on the device only while recording, calibrating or running, and does not store it (no permission required).
+The Internet is used only for ads, payments, downloading the text recognition model and its diagnostics, never to send on-screen content or recipes. You can turn off the accessibility service at any time in Android Settings > Accessibility. If you turn on "shake to stop" in Settings, the app reads the motion sensor on the device only while recording, calibrating or running, and does not store it (no permission required). While running, the app reads the battery temperature, level and charging state on the device to slow down or stop before the device overheats; this is not stored or sent.
 
 ## 7. Your rights
 
