@@ -12,6 +12,7 @@ permalink: /lookntap/privacy/
   녹화 중 터치 받기(b38cbbb · Q35) · 뒤로 · 홈 · 앱 열기(4e3a41f · Q34, queries LAUNCHER · HOME — 패키지 이름은 레시피에만, 밖으로 안 보냄) 2026-11-04 반영.
   실행이 막혔을 때(c87254f · Q36): 팝업 규칙 · 견본은 레시피에, 배터리 온도는 읽기만 (2026-11-04 사후 점검).
   진입 설계(1699db3 · Q42 · Q43): 알림창 · 빠른 설정 단계, 홈 위젯 찾기, 처음부터 다시 열기(CLEAR_TASK) 2026-11-04 반영.
+  확인 중 입력 막기(ae821b0 · Q44): 보정 중 터치는 막기만 하고 기록 · 전달 안 함 — 2026-11-05 반영.
   그 밖 SDK: Play 인앱 업데이트(app-update-ktx). 자동 백업은 설정(sharedpref lookntap.xml)만 — 레시피 · 사진 · 기록은 백업 안 됨.
   이 문서 · 앱 안 공개 문구(ui-flow S2, Q27) · Play 접근성 신고(release/play-console/accessibility.md) · 데이터 보안 양식은 항상 같은 내용이어야 한다.
   함께 고칠 때: 인터넷 권한 · 광고 · 결제 · 의견 보내기 · 크래시 수집 · OCR(ML Kit) 출시 포함 · 공유(SH, 서버 업로드)가 들어오면
@@ -29,7 +30,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 
 **요약**
 - 앱은 회원가입이 없습니다. 앱이 화면에서 본 내용과 레시피 · 실행 기록은 **기기 밖으로 나가지 않고, 광고 · 분석에 쓰지 않습니다.**
-- 앱은 접근성 서비스로 화면의 글자 · 버튼 정보와 화면 사진을 봅니다. 이것은 **사용자가 화면 위 조작 패널을 띄워 둔 동안에만**(녹화 · 보정 · 실행 · 시작할 레시피 고르기), 사용자가 녹화한 탭을 다시 누르기 위해서만 씁니다. 패널을 닫으면 화면을 읽지 않습니다. 녹화 중에는 화면 터치를 받아 누른 자리를 기억한 뒤 앱에 그대로 전달합니다.
+- 앱은 접근성 서비스로 화면의 글자 · 버튼 정보와 화면 사진을 봅니다. 이것은 **사용자가 화면 위 조작 패널을 띄워 둔 동안에만**(녹화 · 보정 · 실행 · 시작할 레시피 고르기), 사용자가 녹화한 탭을 다시 누르기 위해서만 씁니다. 패널을 닫으면 화면을 읽지 않습니다. 녹화 중에는 화면 터치를 받아 누른 자리를 기억한 뒤 앱에 그대로 전달합니다. 녹화 뒤 확인(천천히 실행) 중에는 잘못 눌리지 않게 화면 터치를 잠시 막으며, 이 터치는 기록하지 않습니다.
 - 레시피 · 버튼 사진 · 실행 기록은 **기기 안에만** 저장됩니다. 녹화한 화면 사진은 고칠 때 쓰려고 레시피를 저장하기 전까지만 두고 지웁니다. 비밀번호 칸의 내용은 저장하지 않습니다.
 - 앱 홈 화면 아래의 배너 광고는 Google AdMob이 표시하며, 광고 ID 등은 Google이 처리합니다. 광고는 앱 화면에만 있고, 다른 앱 위에 뜨는 패널에는 없습니다.
 - 개발자는 사용자를 알아볼 수 있는 정보를 받지 않습니다.
@@ -165,7 +166,7 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 
 **Summary**
 - There is no sign-up. What the app reads on screen, your recipes and run history **never leave your device and are not used for ads or analytics.**
-- The app uses an accessibility service to read on-screen text, button information and screenshots — **only while you keep the floating control panel open** (recording, calibrating, running, or choosing a recipe to start), and only to tap again the buttons you recorded. When the panel is closed, the app does not read the screen. While recording, it receives your touches to remember where you tapped and passes them on to the app.
+- The app uses an accessibility service to read on-screen text, button information and screenshots — **only while you keep the floating control panel open** (recording, calibrating, running, or choosing a recipe to start), and only to tap again the buttons you recorded. When the panel is closed, the app does not read the screen. While recording, it receives your touches to remember where you tapped and passes them on to the app. While checking a new recipe (slow replay), it briefly blocks touches so nothing is tapped by accident; these touches are not recorded.
 - Recipes, button images and run history are stored **only on your device**. Recorded screenshots are kept only until you save the recipe, for fixing steps, then deleted. Password fields are never stored.
 - The banner ad at the bottom of the app's home screen is served by Google AdMob, which processes data such as the advertising ID. Ads appear only in the app's own screens, never in the floating panel over other apps.
 - The developer receives no information that identifies you.
