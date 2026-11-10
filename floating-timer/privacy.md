@@ -49,6 +49,7 @@ LCEMJR(이하 "개발자")는 Floating Timer 앱(이하 "앱")을 이용하는 �
 | 화면 앞에 있는 앱의 패키지 이름 (사용 정보 접근 권한) | 지정한 게임이 켜질 때 타이머 자동 표시, 다른 앱으로 나갔을 때 아이콘 반투명 · 숨김, 타이머별 "보이는 앱" |
 | 설치된 앱 목록 (런처에 보이는 앱) | 자동 실행 앱 · 보이는 앱 선택 화면 |
 | 타이머 · 그룹 · 닉네임 · 앱 설정, 실행 중 타이머 | 앱 동작 |
+| 타이머에 지정한 사진 (사용자가 Android 사진 선택기로 고른 사진만, 권한 없음) | 메뉴 버튼 · 아이콘에 표시. 고른 부분만 작게 줄인 사본을 앱 안에 저장하고 원본 사진에는 접근하지 않음 |
 
 ### 2-3. 제3자 서비스가 처리하는 정보
 | 서비스 | 처리하는 정보 | 개발자가 받는 것 |
@@ -62,7 +63,7 @@ LCEMJR(이하 "개발자")는 Floating Timer 앱(이하 "앱")을 이용하는 �
 ## 3. 보유 기간 및 파기
 
 - 의견 보내기 정보: 받은 날부터 **1년** 보관 후 파기합니다. 답변 · 수정이 끝난 의견은 그 전에도 파기할 수 있습니다. 삭제를 요청하시면 바로 파기합니다.
-- 기기 안의 정보: 앱을 삭제하거나 앱 데이터를 지우면 함께 삭제됩니다.
+- 기기 안의 정보: 앱을 삭제하거나 앱 데이터를 지우면 함께 삭제됩니다. 기기의 Android 백업을 켜 두었다면 타이머 설정과 타이머 사진이 사용자 본인의 Google 계정 백업에 포함될 수 있으며(개발자는 볼 수 없음), 백업은 기기 설정에서 관리합니다.
 - 파기 방법: 스프레드시트의 해당 행을 복구할 수 없게 삭제합니다.
 
 ## 4. 처리 위탁 및 국외 이전
@@ -128,6 +129,7 @@ LCEMJR(이하 "개발자")는 Floating Timer 앱(이하 "앱")을 이용하는 �
 이 처리방침은 **2026년 10월 23일**부터 적용됩니다. 내용이 바뀌면 이 페이지에 시행일과 함께 알립니다.
 
 - 2026-10-23 최초 시행
+- 2026-11-10 타이머 사진(기기 안에만 저장) · Android 백업 안내 추가
 
 ---
 
@@ -169,6 +171,7 @@ Feedback is submitted through Google Forms and stored in the developer's Google 
 | Package name of the foreground app (Usage access permission) | Showing the timer automatically when a chosen game starts, dimming or hiding the icon in other apps, per-timer "visible apps" |
 | List of installed apps (apps shown in the launcher) | Choosing auto-start apps and visible apps |
 | Timers, groups, nicknames, settings, running timers | Running the app |
+| Photos you set on a timer (only photos you pick in the Android photo picker; no permission) | Shown on menu buttons and the icon. The app keeps a small copy of the part you chose and does not access your other photos |
 
 ### 2-3. Information processed by third-party services
 | Service | Information | What the developer receives |
@@ -182,7 +185,7 @@ See the [Google Privacy Policy](https://policies.google.com/privacy) for how the
 ## 3. Retention and deletion
 
 - Feedback: kept for **1 year** from receipt, then deleted. It may be deleted earlier once handled, and immediately on request.
-- On-device data: deleted when you uninstall the app or clear its data.
+- On-device data: deleted when you uninstall the app or clear its data. If Android backup is on, your timer settings and timer photos may be included in your own Google account backup (the developer cannot see it); you can manage it in your device settings.
 
 ## 4. Processors and international transfers
 
@@ -221,3 +224,5 @@ LCEMJR (Privacy officer: Maro Cheon) — lcemjr.apps@gmail.com
 ## 10. Changes
 
 This policy is effective from **October 23, 2026**. Changes will be posted on this page with a new effective date.
+
+- 2026-11-10: added timer photos (stored on the device only) and a note on Android backup
