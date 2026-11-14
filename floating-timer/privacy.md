@@ -94,6 +94,7 @@ LCEMJR(이하 "개발자")는 Floating Timer 앱(이하 "앱")을 이용하는 �
 | 알림 | 타이머 종료 알림, 실행 중 표시 | 종료 알림이 오지 않음 |
 | 사용 정보 접근 | 앞 화면 앱 확인 (2-2) — 기기 밖으로 보내지 않음 | 자동 실행 · 앱별 표시 기능만 꺼지고 나머지는 동작 |
 | 정확한 알람 | 화면이 꺼져 있어도 정확한 시각에 타이머 종료 | — |
+| 전체 화면 알림 | 설정에서 '전체 화면'을 고른 경우에만, 잠금화면에서 끝난 타이머를 전체 화면으로 알림 | 일반 알림으로 표시 |
 | 인터넷 | 의견 보내기, 광고, 결제 | — |
 
 ## 7. 이용자의 권리와 행사 방법
@@ -130,6 +131,7 @@ LCEMJR(이하 "개발자")는 Floating Timer 앱(이하 "앱")을 이용하는 �
 
 - 2026-10-23 최초 시행
 - 2026-11-10 타이머 사진(기기 안에만 저장) · Android 백업 안내 추가
+- 2026-11-14 권한 표에 전체 화면 알림 추가
 
 ---
 
@@ -207,6 +209,7 @@ The developer does not sell or share your personal information with third partie
 | Notifications | Timer finished alerts and ongoing status | No finish alerts |
 | Usage access | To know the foreground app (2-2) — never leaves your device | Only auto-start and per-app visibility are disabled |
 | Exact alarms | To finish timers on time even when the screen is off | — |
+| Full-screen notifications | Only if you choose "Full screen" in settings: to show a finished timer full screen on the lock screen | Shown as a normal notification |
 | Internet | Feedback, ads, payments | — |
 
 ## 7. Your rights
@@ -226,3 +229,4 @@ LCEMJR (Privacy officer: Maro Cheon) — lcemjr.apps@gmail.com
 This policy is effective from **October 23, 2026**. Changes will be posted on this page with a new effective date.
 
 - 2026-11-10: added timer photos (stored on the device only) and a note on Android backup
+- 2026-11-14: added full-screen notifications to the permissions table
