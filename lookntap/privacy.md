@@ -44,12 +44,24 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 | 실행 기록 | 실패한 단계를 사용자가 확인하고 고칠 수 있게 그 순간의 화면 정보를 남기기 |
 | 광고 표시 | 앱 홈 화면 하단 배너 광고 표시 (Google AdMob) |
 | 후원 처리 | 인앱 후원 결제 확인 및 후원자 광고 제거 (Google Play 결제, 후원 기능을 제공하는 경우) |
+| 레시피 공유 | 사용자가 `공유하기`를 누르고 직접 확인한 레시피를 공유 목록에 올리고, 다른 사용자가 받아 쓰게 하기 · 신고 처리 |
 
 ## 2. 처리하는 개인정보 항목
 
 ### 2-1. 개발자가 받는 정보
 
-**없습니다.** 앱에는 회원가입 · 의견 전송 · 분석 · 크래시 수집 기능이 없습니다. 광고 · 결제 · 글자 인식 서비스에서는 집계 보고서와 구매 확인 정보만 받습니다(2-3).
+앱에는 회원가입 · 의견 전송 · 분석 · 크래시 수집 기능이 없습니다. 광고 · 결제 · 글자 인식 서비스에서는 집계 보고서와 구매 확인 정보만 받습니다(2-3).
+
+**레시피 공유를 쓸 때만** 아래 정보가 공유 서버(Google Firebase)에 저장됩니다. 공유를 쓰지 않으면 아무것도 보내지 않습니다.
+
+| 항목 | 언제 | 쓰는 곳 · 보관 |
+|---|---|---|
+| 올린 레시피 묶음 — 레시피 이름 · 쓰는 법(직접 쓴 글) · 단계 · 버튼 글자 · 버튼 사진 · 값, 대상 앱 이름 · 패키지, 앱 버전 · 화면 크기 | `공유하기` → 확인 화면에서 **글자와 사진을 전부 보고** `올리기`를 눌렀을 때만. 전화번호 · 이메일 · 주민등록번호 · 카드 · 긴 숫자는 자동으로 가리고, 사용자가 더 가리거나 사진을 뺄 수 있음. 녹화 화면 사진 · 실행 기록 · 비밀번호는 보내지 않음 | 누구나 받을 수 있게 공개. 올린 사람이 지우거나 운영자가 신고로 지울 때까지 |
+| 익명 사용자 ID (Firebase 익명 로그인 — 이름 · 이메일 · 전화번호 없음) | 처음 올리거나 · 받거나 · 신고할 때 | 내가 올린 것만 지울 수 있게. 받은 수 · 신고와 함께 저장 |
+| 신고 (레시피 · 사유) | 신고할 때 | 운영자가 확인 · 삭제 판단 |
+| 받은 수 | 레시피를 받을 때 (+1, 누가 받았는지는 저장 안 함) | 목록에 표시 |
+
+공유 목록 보기 · 미리보기 · 받기는 로그인 없이 공개 정보만 읽습니다. 숨긴 사람 목록은 이 기기에만 저장됩니다.
 
 ### 2-2. 기기 안에서만 처리하고 밖으로 보내지 않는 정보
 
@@ -87,7 +99,8 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 - 기기 안의 정보: 사용자가 레시피 · 기록을 지우거나, 앱을 삭제하거나, 앱 데이터를 지우면 삭제됩니다.
 - 녹화 화면 사진은 레시피를 저장하면 지우고, 저장하지 않은 녹화는 7일 뒤 지웁니다.
 - 실행 기록은 고치면 지우고 최근 몇 개만 남깁니다.
-- 개발자가 보관하는 개인정보는 없습니다. 광고 · 결제 정보는 Google 정책에 따라 Google이 보관합니다.
+- 공유한 레시피 · 신고는 올린 사람이 앱의 `공유 레시피`에서 지우거나 운영자가 지울 때까지 공유 서버에 보관합니다. 앱을 지우면 익명 ID를 잃어 앱에서 지울 수 없으니, 아래 이메일로 레시피 이름을 알려 주시면 지웁니다.
+- 그 밖에 개발자가 보관하는 개인정보는 없습니다. 광고 · 결제 정보는 Google 정책에 따라 Google이 보관합니다.
 
 ## 4. 제3자 제공 · 처리 위탁 및 국외 이전
 
@@ -98,8 +111,9 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 | Google LLC (AdMob) | 미국 등 Google 데이터센터 소재국 | 2-3 광고 항목 | 광고 표시 · 측정 · 광고 동의 | 앱 홈 화면에서 광고를 불러올 때 네트워크(HTTPS)로 전송 | Google 정책에 따름 |
 | Google LLC (Google Play 결제) | 미국 등 | 2-3 결제 항목 | 결제 처리 | 결제할 때 | Google 정책에 따름 |
 | Google LLC (ML Kit) | 미국 등 | 2-3 글자 인식 항목 (화면 사진 · 글자 제외) | 진단 · 사용 통계 | 글자 인식을 쓸 때 네트워크(HTTPS)로 전송 | Google 정책에 따름 |
+| Google LLC (Firebase — 처리 위탁: 공유 서버 운영) | 대한민국(서울 리전 asia-northeast3) · 인증은 미국 등 | 2-1 공유 항목 | 레시피 공유 · 익명 로그인 | 올리기 · 받기 · 신고할 때 네트워크(HTTPS)로 전송 | 3절 |
 
-화면 내용 · 레시피 · 실행 기록은 이전하지 않습니다. 광고 개인정보는 5절 방법으로 제한할 수 있습니다. Android 백업은 사용자 본인의 Google 계정에 저장되며 2-3의 앱 설정만 포함합니다.
+공유를 누르고 직접 확인한 레시피 외의 화면 내용 · 레시피 · 실행 기록은 이전하지 않습니다. 광고 개인정보는 5절 방법으로 제한할 수 있습니다. Android 백업은 사용자 본인의 Google 계정에 저장되며 2-3의 앱 설정만 포함합니다.
 
 ## 5. 광고 ID 등 자동 수집 장치와 거부 방법
 
@@ -128,7 +142,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 ## 8. 안전성 확보 조치
 
 - 모든 정보는 다른 앱이 읽을 수 없는 앱 전용 저장소에 저장됩니다.
-- 화면 내용 · 레시피 · 실행 기록을 네트워크로 보내는 기능이 없고, 광고 요청에도 넣지 않습니다.
+- 화면 내용 · 레시피 · 실행 기록은 네트워크로 보내지 않고 광고 요청에도 넣지 않습니다. 예외는 사용자가 확인 화면에서 직접 보고 올린 공유 레시피뿐이며 HTTPS로 보냅니다.
 - 접근성 서비스가 켜져 있어도 사용자가 패널을 띄우지 않으면 화면을 읽지 않고, 앱 안 공개 · 동의 전에는 아무것도 읽지 않습니다.
 
 ## 9. 아동의 개인정보
@@ -152,9 +166,10 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 
 ## 12. 처리방침의 변경
 
-이 처리방침은 **2026년 11월 3일**부터 적용됩니다. 내용이 바뀌면 이 페이지에 시행일과 함께 알립니다. 레시피 공유처럼 정보를 기기 밖으로 보내는 기능이 생기면, 그 기능을 넣기 전에 이 처리방침을 먼저 고칩니다.
+이 처리방침은 **2026년 11월 23일**부터 적용됩니다. 내용이 바뀌면 이 페이지에 시행일과 함께 알립니다.
 
 - 2026-11-03 최초 시행
+- 2026-11-23 레시피 공유(공유 서버 · 익명 로그인 · 신고) 추가
 
 ---
 
@@ -185,7 +200,18 @@ This policy explains how LCEMJR ("the developer") handles information in the Loo
 
 ### 2-1. Information the developer receives
 
-**None.** The app has no sign-up, feedback upload, analytics or crash reporting. From the ad, billing and text recognition services the developer receives only aggregated reports and purchase verification data (2-3).
+The app has no sign-up, feedback upload, analytics or crash reporting. From the ad, billing and text recognition services the developer receives only aggregated reports and purchase verification data (2-3).
+
+**Only when you use recipe sharing**, the following is stored on the sharing server (Google Firebase). Nothing is sent if you don't use sharing.
+
+| Item | When | Used for / kept |
+|---|---|---|
+| The shared recipe bundle — name, how-to note you write, steps, button text, button images, values, target app name and package, app version and screen size | Only when you tap Share, **review all its text and images**, and tap Upload. Phone numbers, emails, resident registration and card numbers and long numbers are hidden automatically; you can hide more text or leave images out. Recorded screenshots, run history and passwords are never sent | Public so anyone can download it. Kept until you delete it or the operator removes it after a report |
+| Anonymous user ID (Firebase anonymous sign-in — no name, email or phone) | When you first upload, download or report | Letting you delete only your own uploads. Stored with download counts and reports |
+| Reports (recipe, reason) | When you report | Reviewed by the operator for removal |
+| Download count | When a recipe is downloaded (+1; who downloaded is not stored) | Shown in the list |
+
+Browsing, previewing and downloading read public data only. Your list of hidden people is stored only on your device.
 
 ### 2-2. Information processed on your device only
 
@@ -223,11 +249,12 @@ See the [Google Privacy Policy](https://policies.google.com/privacy) for how the
 - On-device data is deleted when you delete recipes or history, uninstall the app, or clear its data.
 - Recorded screenshots are deleted when you save the recipe; unsaved recordings are deleted after 7 days.
 - Run history is removed once fixed, and only the most recent few entries are kept.
-- The developer keeps no personal data. Ad and billing data are kept by Google under Google's policies.
+- Shared recipes and reports are kept on the sharing server until you delete them in Shared recipes or the operator removes them. If you uninstall the app you lose the anonymous ID and can't delete them in the app — email us the recipe name and we'll delete it.
+- Otherwise the developer keeps no personal data. Ad and billing data are kept by Google under Google's policies.
 
 ## 4. Processors and international transfers
 
-The developer does not sell or share your personal information with third parties. Google LLC processes data for ads (AdMob), payments (Play Billing) and text recognition diagnostics (ML Kit), which may involve transfer to the United States and other countries where Google operates data centers. On-screen content, recipes and run history are never transferred. Android backup is stored in your own Google account and contains only the app settings in 2-3.
+The developer does not sell or share your personal information with third parties. Google LLC processes data for ads (AdMob), payments (Play Billing) and text recognition diagnostics (ML Kit), which may involve transfer to the United States and other countries where Google operates data centers. For recipe sharing, Google Firebase (as our processor) stores shared recipes in Seoul, Korea (asia-northeast3); sign-in may be processed in the United States and elsewhere. Apart from recipes you review and share yourself, on-screen content, recipes and run history are never transferred. Android backup is stored in your own Google account and contains only the app settings in 2-3.
 
 ## 5. Advertising ID and your choices
 
@@ -263,4 +290,7 @@ LCEMJR (Privacy officer: Maro Cheon) — lcemjr.apps@gmail.com
 
 ## 10. Changes
 
-This policy is effective from **November 3, 2026**. Changes will be posted on this page with a new effective date. If a feature that sends information off the device (such as recipe sharing) is added, this policy will be updated before that feature is released.
+This policy is effective from **November 23, 2026**. Changes will be posted on this page with a new effective date.
+
+- 2026-11-03 First version
+- 2026-11-23 Added recipe sharing (sharing server, anonymous sign-in, reports)
