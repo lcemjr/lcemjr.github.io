@@ -58,7 +58,8 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 |---|---|---|
 | 올린 레시피 묶음 — 레시피 이름 · 쓰는 법(직접 쓴 글) · 단계 · 버튼 글자 · 버튼 사진 · 값, 대상 앱 이름 · 패키지, 앱 버전 · 화면 크기 | `공유하기` → 확인 화면에서 **글자와 사진을 전부 보고** `올리기`를 눌렀을 때만. 전화번호 · 이메일 · 주민등록번호 · 카드 · 긴 숫자는 자동으로 가리고, 사용자가 더 가리거나 사진을 뺄 수 있음. 녹화 화면 사진 · 실행 기록 · 비밀번호는 보내지 않음 | 누구나 받을 수 있게 공개. 올린 사람이 지우거나 운영자가 신고로 지울 때까지 |
 | 익명 사용자 ID (Firebase 익명 로그인 — 이름 · 이메일 · 전화번호 없음) | 처음 올리거나 · 받거나 · 신고할 때 | 내가 올린 것만 지울 수 있게. 받은 수 · 신고와 함께 저장 |
-| 신고 (레시피 · 사유) | 신고할 때 | 운영자가 확인 · 삭제 판단 |
+| 후기 (별점 1~5 · 직접 쓴 글 300자 이내 · 쓴 때) | 받은 레시피에 `후기 쓰기`를 눌렀을 때만 | 누구나 볼 수 있게 공개 (익명 ID 앞 4자만 '사용자 abcd'로 표시). 쓴 사람이 지우거나 운영자가 신고로 지울 때까지 |
+| 신고 (레시피 또는 후기 · 사유) | 신고할 때 | 운영자가 확인 · 삭제 판단 |
 | 받은 수 | 레시피를 받을 때 (+1, 누가 받았는지는 저장 안 함) | 목록에 표시 |
 
 공유 목록 보기 · 미리보기 · 받기는 로그인 없이 공개 정보만 읽습니다. 숨긴 사람 목록은 이 기기에만 저장됩니다.
@@ -99,7 +100,7 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 - 기기 안의 정보: 사용자가 레시피 · 기록을 지우거나, 앱을 삭제하거나, 앱 데이터를 지우면 삭제됩니다.
 - 녹화 화면 사진은 레시피를 저장하면 지우고, 저장하지 않은 녹화는 7일 뒤 지웁니다.
 - 실행 기록은 고치면 지우고 최근 몇 개만 남깁니다.
-- 공유한 레시피 · 신고는 올린 사람이 앱의 `공유 레시피`에서 지우거나 운영자가 지울 때까지 공유 서버에 보관합니다. 앱을 지우면 익명 ID를 잃어 앱에서 지울 수 없으니, 아래 이메일로 레시피 이름을 알려 주시면 지웁니다.
+- 공유한 레시피 · 후기 · 신고는 올린 사람이 앱의 `공유 레시피`에서 지우거나 운영자가 지울 때까지 공유 서버에 보관합니다. 앱을 지우면 익명 ID를 잃어 앱에서 지울 수 없으니, 아래 이메일로 레시피 이름을 알려 주시면 지웁니다.
 - 그 밖에 개발자가 보관하는 개인정보는 없습니다. 광고 · 결제 정보는 Google 정책에 따라 Google이 보관합니다.
 
 ## 4. 제3자 제공 · 처리 위탁 및 국외 이전
@@ -166,10 +167,11 @@ LCEMJR(이하 "개발자")는 룩앤탭 앱(이하 "앱")을 이용하는 분의
 
 ## 12. 처리방침의 변경
 
-이 처리방침은 **2026년 11월 23일**부터 적용됩니다. 내용이 바뀌면 이 페이지에 시행일과 함께 알립니다.
+이 처리방침은 **2026년 11월 24일**부터 적용됩니다. 내용이 바뀌면 이 페이지에 시행일과 함께 알립니다.
 
 - 2026-11-03 최초 시행
 - 2026-11-23 레시피 공유(공유 서버 · 익명 로그인 · 신고) 추가
+- 2026-11-24 공유 레시피 후기(별점 · 글) 추가
 
 ---
 
@@ -208,7 +210,8 @@ The app has no sign-up, feedback upload, analytics or crash reporting. From the 
 |---|---|---|
 | The shared recipe bundle — name, how-to note you write, steps, button text, button images, values, target app name and package, app version and screen size | Only when you tap Share, **review all its text and images**, and tap Upload. Phone numbers, emails, resident registration and card numbers and long numbers are hidden automatically; you can hide more text or leave images out. Recorded screenshots, run history and passwords are never sent | Public so anyone can download it. Kept until you delete it or the operator removes it after a report |
 | Anonymous user ID (Firebase anonymous sign-in — no name, email or phone) | When you first upload, download or report | Letting you delete only your own uploads. Stored with download counts and reports |
-| Reports (recipe, reason) | When you report | Reviewed by the operator for removal |
+| Reviews (1–5 stars, a note you write of up to 300 characters, time) | Only when you tap Write a review on a recipe you downloaded | Public (shown as "User abcd" — the first 4 characters of the anonymous ID). Kept until you delete it or the operator removes it after a report |
+| Reports (recipe or review, reason) | When you report | Reviewed by the operator for removal |
 | Download count | When a recipe is downloaded (+1; who downloaded is not stored) | Shown in the list |
 
 Browsing, previewing and downloading read public data only. Your list of hidden people is stored only on your device.
@@ -249,7 +252,7 @@ See the [Google Privacy Policy](https://policies.google.com/privacy) for how the
 - On-device data is deleted when you delete recipes or history, uninstall the app, or clear its data.
 - Recorded screenshots are deleted when you save the recipe; unsaved recordings are deleted after 7 days.
 - Run history is removed once fixed, and only the most recent few entries are kept.
-- Shared recipes and reports are kept on the sharing server until you delete them in Shared recipes or the operator removes them. If you uninstall the app you lose the anonymous ID and can't delete them in the app — email us the recipe name and we'll delete it.
+- Shared recipes, reviews and reports are kept on the sharing server until you delete them in Shared recipes or the operator removes them. If you uninstall the app you lose the anonymous ID and can't delete them in the app — email us the recipe name and we'll delete it.
 - Otherwise the developer keeps no personal data. Ad and billing data are kept by Google under Google's policies.
 
 ## 4. Processors and international transfers
@@ -290,7 +293,8 @@ LCEMJR (Privacy officer: Maro Cheon) — lcemjr.apps@gmail.com
 
 ## 10. Changes
 
-This policy is effective from **November 23, 2026**. Changes will be posted on this page with a new effective date.
+This policy is effective from **November 24, 2026**. Changes will be posted on this page with a new effective date.
 
 - 2026-11-03 First version
 - 2026-11-23 Added recipe sharing (sharing server, anonymous sign-in, reports)
+- 2026-11-24 Added reviews (stars and notes) for shared recipes
